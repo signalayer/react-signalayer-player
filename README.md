@@ -22,7 +22,7 @@ export class App extends React.Component {
 
     return (
       <div className="app">
-        <SignalayerPlayer projectId="..." async={false} userData={userData} />
+        <SignalayerPlayer projectId="..." userData={userData} />
       </div>
     );
   }
