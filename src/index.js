@@ -21,7 +21,14 @@ MethodList.forEach((methodName) => {
     SignalayerAPI[methodName] = function (method) {
         return function () {
             const args = Array.prototype.slice.call(arguments);
-            BeforeLoadAPIRequests.push({method: method, args: args})
+
+            if (!window.Signalayer) {
+                BeforeLoadAPIRequests.push({method: method, args: args})
+            } else if (window.Signalayer.API) {
+                window.Signalayer.API[method].apply(null, args);
+            } else {
+                console.warn("Signalayer API not ready");
+            }
         }
     }(methodName)
 });
