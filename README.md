@@ -40,4 +40,4 @@ SignalayerAPI.show("campaign_id");
 ```
 
 
-Find more information [Docs](https://signalayer.com/docs#apiDocsSection)
+Find more information in our [Developer Documentation](https://signalayer.com/docs#apiDocsSection)
