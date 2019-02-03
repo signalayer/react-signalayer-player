@@ -108,7 +108,7 @@ export default class SignalayerPlayer extends Component {
     componentWillUnmount() {
         if (!isDOMReady || !window.Signalayer) return false;
 
-        window.Signalayer.stop();
+        SignalayerAPI.stop();
 
         delete window.Signalayer;
         delete window.SignalayerUserData;
