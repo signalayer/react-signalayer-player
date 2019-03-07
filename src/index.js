@@ -13,6 +13,16 @@ const MethodList = ["identify", "goal", "updateUserData", "start", "stop", "refr
 const SignalayerAPI = {};
 const BeforeLoadAPIRequests = [];
 
+function waitForSignalayerAPI(method, args) {
+    if (window.Signalayer && window.Signalayer.API) {
+        window.Signalayer.API[method].apply(null, args);
+    } else {
+        setTimeout(function () {
+            waitForSignalayerAPI(method, args);
+        }, 250);
+    }
+}
+
 /**
  * Temp API methods (until player API loaded)
  *
@@ -24,10 +34,10 @@ MethodList.forEach((methodName) => {
 
             if (!window.Signalayer) {
                 BeforeLoadAPIRequests.push({method: method, args: args})
-            } else if (window.Signalayer.API) {
+            } else if (window.Signalayer && window.Signalayer.API) {
                 window.Signalayer.API[method].apply(null, args);
             } else {
-                console.warn("Signalayer API not ready");
+                waitForSignalayerAPI(method, args);
             }
         }
     }(methodName)
@@ -106,9 +116,15 @@ export default class SignalayerPlayer extends Component {
     }
 
     componentWillUnmount() {
-        if (!isDOMReady || !window.Signalayer) return false;
+        if (!isDOMReady || !window.Signalayer) {
+            return false;
+        }
 
-        SignalayerAPI.stop();
+        try {
+            window.Signalayer.API.stop();
+        } catch (e) {
+            console.error(e);
+        }
 
         delete window.Signalayer;
         delete window.SignalayerUserData;
