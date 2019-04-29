@@ -120,8 +120,11 @@ export default class SignalayerPlayer extends Component {
             return false;
         }
 
+
         try {
-            window.Signalayer.API.stop();
+            if (window.Signalayer.API) {
+                window.Signalayer.API.stop();
+            }
         } catch (e) {
             console.error(e);
         }
